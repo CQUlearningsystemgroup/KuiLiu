@@ -7,11 +7,11 @@ addpath('src','Image','main');
 
 
 Image = imread('002760.jpg');
-Image = imresize(Image, [512, 512]);
+Image = imresize(Image, [544, 544]);
 
 
 %%%%%%%%%%%%%  set
-CR = 0.33   ;                     %compression rate
+CR = 0.32   ;                     %compression rate
 [I_line,I_row] = size(Image(:,:,1));
 CR_line = ceil(256 * CR);   
 
