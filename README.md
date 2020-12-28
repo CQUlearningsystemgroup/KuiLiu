@@ -9,7 +9,7 @@ A novel incoherent convolution approach is invented for learning the embedded ma
 
 ### **Run Compressive Convolutional Network**
 `FrontEnd_Detection&Compression` is the training code, which is modified from the official public YOLOv2 code.
-`Demo.m` is a demo to reconstruct the compressive images using different compressive approaches. You can ran `Demo.m` to gain the reconstruction image with evaluation indexes of PSNR and SSIM.
+`demo.m` is a demo to compress and reconstruct images with different compression ratios. You can run `demo.m` to gain the reconstruction image with evaluation indexes of PSNR and SSIM.
 
 ### **Experiments**
 Dataset|BSD100|BSD100|VOC|VOC
