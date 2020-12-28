@@ -11,7 +11,7 @@ function [CCN] = ccn(CS0, i)
             end
         end  
     end
-    k_rate = (14)^2/CS0;
+    k_rate = (14)^2/CS0;  % CS0 = ceil(256*CR)
     fin(1,1) = 1;
     % fin返回抽样数据的坐标
     for res = 1:(CS0-1)            
