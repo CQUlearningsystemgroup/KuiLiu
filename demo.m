@@ -3,70 +3,33 @@ clear
 close all;
 clc
 
-addpath('src','Image','main');
+addpath('src','Image','main', 'allcode', 'Set5');
 
-
-Image = imread('002760.jpg');
+Image = imread('boats.tif');
+Image = uint16(Image);
 Image = imresize(Image, [544, 544]);
 
-
-%%%%%%%%%%%%%  set
-CR = 0.32   ;                     %compression rate
+%%%%%%%%%%%%%  Setting
+bits = 5;              % Quantization Bit-Depth
+CR = 0.32;             % Compression rate
 [I_line,I_row] = size(Image(:,:,1));
-CR_line = ceil(256 * CR);   
+CR_line = ceil(256 * CR);  
 
-
-%%%%%%%%%%%%%  build compress matrix
+%%%%%%%%%%%%%  Build compresssion matrix
+% CCN-YOLO
 CCN = ccn(CR_line, 1);
-[CCN_recons,sim1] = recons3(CCN,Image);
+[CCN_recons,sim1, huffman_cr] = recons3(CCN,Image, bits);
 
-RandConv = randconv(CR_line);
-[RandConv_recons,sim2] = recons3(RandConv,Image);
 
-%Gauss = randn(85,256);
-[Gauss_recons,sim3] = recons2(Image,1,CR); 
+%%%%%%%%%% Draw results
+load pos.mat     
+subplot(1,2,1);
+imshow(uint8(Image)),title('Input Image');
 
-%ADAGIO = adagio(Image,CR_line); 
-[ADAGIO_recons,sim4] = recons2(Image,2,CR);
-
-%CS_SM = SparseRandomMtx(CR_line,I_row,10);
-[CS_SM_recons,sim5] = recons2(Image,3,CR);
-
-%%%%%%%%%% draw results
-subplot(2,3,1);
-imshow(Image),title('Input Image');
-
-subplot(2,3,2);
+subplot(1,2,2);
 a1 = num2str(sim1(1,1));
 a2 = num2str(sim1(2,1));
 a3 = strcat('CCN',' PSNR=',a1,' SSIM=',a2);
 imshow(CCN_recons,'border','tight'),title(a3);
 
         
-subplot(2,3,3);
-a1 = num2str(sim3(1,1));
-a2 = num2str(sim3(2,1));
-a3 = strcat('Gauss',' PSNR=',a1,' SSIM=',a2);
-imshow(Gauss_recons),title(a3);
-
-        
-subplot(2,3,4);
-a1 = num2str(sim4(1,1));
-a2 = num2str(sim4(2,1));
-a3 = strcat('ADAGIO',' PSNR=',a1,' SSIM=',a2);
-imshow(ADAGIO_recons),title(a3);
-
-        
-subplot(2,3,5);
-a1 = num2str(sim2(1,1));
-a2 = num2str(sim2(2,1));
-a3 = strcat('RandConv',' PSNR=',a1,' SSIM=',a2);
-imshow(RandConv_recons),title(a3);
-
-        
-subplot(2,3,6);
-a1 = num2str(sim5(1,1));
-a2 = num2str(sim5(2,1));
-a3 = strcat('CS-SM',' PSNR=',a1,' SSIM=',a2);
-imshow(CS_SM_recons),title(a3);
-
